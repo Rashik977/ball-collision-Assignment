@@ -1,12 +1,14 @@
 const rect = document.getElementById("rectangle");
 
-rect.style.width = "500px";
-rect.style.height = "500px";
+const width = 1000;
+const height = 500;
+const numOfBalls = 20;
+const balls = [];
+
+rect.style.width = `${width}px`;
+rect.style.height = `${height}px`;
 rect.style.border = "4px solid black";
 rect.style.position = "relative";
-
-const numOfBalls = 5;
-const balls = [];
 
 class ball {
   constructor(x, y, dx, dy, radius, color) {
@@ -28,16 +30,16 @@ class ball {
     rect.appendChild(this.ball);
   }
   move() {
+    if (this.y + this.radius > height || this.y < 0) {
+      this.dy = -this.dy;
+    }
+    if (this.x + this.radius > width || this.x < 0) {
+      this.dx = -this.dx;
+    }
     this.ball.style.top = `${this.y}px`;
     this.ball.style.left = `${this.x}px`;
     this.y = this.y + this.dy;
     this.x = this.x + this.dx;
-    if (this.y + this.radius > 500 || this.y < 0) {
-      this.dy = -this.dy;
-    }
-    if (this.x + this.radius > 500 || this.x < 0) {
-      this.dx = -this.dx;
-    }
   }
 }
 
@@ -45,8 +47,8 @@ function ballGenerator() {
   for (let i = 0; i < numOfBalls; i++) {
     balls.push(
       new ball(
-        randomNum(0, 400),
-        randomNum(0, 400),
+        randomNum(0, width - 100),
+        randomNum(0, height - 100),
         randomNum(-4, -1) || randomNum(1, 4),
         randomNum(-4, -1) || randomNum(1, 4),
         randomNum(40, 80),
@@ -93,6 +95,10 @@ function ballCollisions() {
         vRelativeVelocity.x * vCollisionNorm.x +
         vRelativeVelocity.y * vCollisionNorm.y;
 
+      if (speed < 0) {
+        continue;
+      }
+
       if (
         ballOverlap(
           ball1.x,
@@ -122,8 +128,8 @@ ballGenerator();
 
 function update() {
   balls.forEach((ball) => {
-    ballCollisions();
     ball.move();
+    ballCollisions();
   });
 }
 
