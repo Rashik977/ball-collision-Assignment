@@ -1,38 +1,77 @@
 const rect = document.getElementById("rectangle");
-const circle = document.getElementById("circle");
 
 rect.style.width = "500px";
 rect.style.height = "500px";
 rect.style.border = "4px solid black";
 rect.style.position = "relative";
 
-circle.style.width = "50px";
-circle.style.height = "50px";
-circle.style.borderRadius = "50%";
-circle.style.backgroundColor = "red";
-circle.style.position = "absolute";
-circle.style.top = "50%";
-circle.style.left = "50%";
+const numOfBalls = 100;
 
-let x = 200;
-let y = 0;
-let dx = 1;
-let dy = 1;
-
-function move() {
-  circle.style.top = `${y}px`;
-  circle.style.bottom = `${y}px`;
-  circle.style.left = `${x}px`;
-  circle.style.right = `${x}px`;
-
-  y = y + dy;
-  x = x + dx;
-  if (y > 450 || y < 0) {
-    dy = -dy;
+class ball {
+  constructor(x, y, dx, dy, radius, color) {
+    this.x = x;
+    this.y = y;
+    this.dx = dx;
+    this.dy = dy;
+    this.radius = radius;
+    this.ball = document.createElement("div");
+    this.ball.style.width = `${radius}px`;
+    this.ball.style.height = `${radius}px`;
+    this.ball.style.borderRadius = "50%";
+    this.ball.style.backgroundColor = `${color}`;
+    this.ball.style.position = "absolute";
+    this.ball.style.top = `${this.y}px`;
+    this.ball.style.left = `${this.x}px`;
+    rect.appendChild(this.ball);
   }
-  if (x > 450 || x < 0) {
-    dx = -dx;
+  move() {
+    this.ball.style.top = `${this.y}px`;
+    this.ball.style.left = `${this.x}px`;
+    this.y = this.y + this.dy;
+    this.x = this.x + this.dx;
+    if (this.y + this.radius > 500 || this.y < 0) {
+      this.dy = -this.dy;
+    }
+    if (this.x + this.radius > 500 || this.x < 0) {
+      this.dx = -this.dx;
+    }
   }
 }
 
-setInterval(move, 1000 / 60);
+function randomColor() {
+  return `rgb(${randomNum(0, 255)}, ${randomNum(0, 255)}, ${randomNum(
+    0,
+    255
+  )})`;
+}
+
+function randomNum(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+const balls = [];
+
+function ballGenerator() {
+  for (let i = 0; i < numOfBalls; i++) {
+    balls.push(
+      new ball(
+        randomNum(0, 400),
+        randomNum(0, 400),
+        1,
+        1,
+        randomNum(5, 100),
+        randomColor()
+      )
+    );
+  }
+}
+
+ballGenerator();
+
+function update() {
+  balls.forEach((ball) => {
+    ball.move();
+  });
+}
+
+setInterval(update, 1000 / 60);
