@@ -58,17 +58,17 @@ class Ball {
   }
 }
 
+//function to generate random number
+function randomNum(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
 //function to generate random color
 function randomColor() {
   return `rgb(${randomNum(0, 255)}, ${randomNum(0, 255)}, ${randomNum(
     0,
     255
   )})`;
-}
-
-//function to generate random number
-function randomNum(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
 }
 
 //function to generate balls and push to the balls array
@@ -99,8 +99,7 @@ function ballCollisions() {
       ball2 = balls[j];
       let vCollision = { x: ball2.x - ball1.x, y: ball2.y - ball1.y };
       let distance = Math.sqrt(
-        (ball2.x - ball1.x) * (ball2.x - ball1.x) +
-          (ball2.y - ball1.y) * (ball2.y - ball1.y)
+        (ball2.x - ball1.x) ** 2 + (ball2.y - ball1.y) ** 2
       );
       let vCollisionNorm = {
         x: vCollision.x / distance,
