@@ -1,6 +1,8 @@
 //getting the div element with the id rectangle
 const rect = document.getElementById("rectangle");
 
+console.log("canvas");
+
 //setting the width and height of the rectangle
 const width = 1000;
 const height = 800;
