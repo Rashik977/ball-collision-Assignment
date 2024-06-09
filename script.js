@@ -1,18 +1,28 @@
+//getting the div element with the id rectangle
 const rect = document.getElementById("rectangle");
 
-const width = 1400;
-const height = 1000;
-const numOfBalls = 20;
-const minRadius = 20;
-const maxRadius = 60;
+//setting the width and height of the rectangle
+const width = 1000;
+const height = 800;
+
+//settings for the ball animation
+const numOfBalls = 1000;
+const minRadius = 5;
+const maxRadius = 10;
+const minSpeed = 1;
+const maxSpeed = 5;
+
+//array to store the balls
 const balls = [];
 
+//styling the rectangle
 rect.style.width = `${width}px`;
 rect.style.height = `${height}px`;
 rect.style.border = "4px solid black";
 rect.style.position = "relative";
 
-class ball {
+//class for the ball
+class Ball {
   constructor(x, y, dx, dy, radius, color) {
     this.x = x;
     this.y = y;
@@ -20,7 +30,7 @@ class ball {
     this.dy = dy;
     this.radius = radius;
     this.color = color;
-    this.mass = radius * 0.1;
+    this.mass = radius * 0.3;
     this.ball = document.createElement("div");
     this.ball.style.width = `${radius * 2}px`;
     this.ball.style.height = `${radius * 2}px`;
@@ -39,15 +49,16 @@ class ball {
     if (this.x + this.radius * 2 > width || this.x < 0) {
       this.dx = -this.dx;
     }
-    console.log(this.x, this.y);
+
+    this.y = this.y + this.dy;
+    this.x = this.x + this.dx;
     // this.ball.style.transform = `translate(${this.x}px, ${this.y}px)`;
     this.ball.style.top = `${this.y}px`;
     this.ball.style.left = `${this.x}px`;
-    this.y = this.y + this.dy;
-    this.x = this.x + this.dx;
   }
 }
 
+//function to generate random color
 function randomColor() {
   return `rgb(${randomNum(0, 255)}, ${randomNum(0, 255)}, ${randomNum(
     0,
@@ -55,18 +66,24 @@ function randomColor() {
   )})`;
 }
 
+//function to generate random number
 function randomNum(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+//function to generate balls and push to the balls array
 function ballGenerator() {
   for (let i = 0; i < numOfBalls; i++) {
     balls.push(
-      new ball(
+      new Ball(
         randomNum(0, width - 100),
         randomNum(0, height - 100),
-        randomNum(-4, -1) || randomNum(1, 4),
-        randomNum(-4, -1) || randomNum(1, 4),
+        randomNum(0, 2) === 0
+          ? randomNum(-maxSpeed, -minSpeed)
+          : randomNum(minSpeed, maxSpeed),
+        randomNum(0, 2) === 0
+          ? randomNum(-maxSpeed, -minSpeed)
+          : randomNum(minSpeed, maxSpeed),
         randomNum(minRadius, maxRadius),
         randomColor()
       )
@@ -74,10 +91,8 @@ function ballGenerator() {
   }
 }
 
+//function to check for ball collisions
 function ballCollisions() {
-  let ball1;
-  let ball2;
-
   for (let i = 0; i < balls.length; i++) {
     ball1 = balls[i];
     for (let j = i + 1; j < balls.length; j++) {
@@ -124,6 +139,7 @@ function ballCollisions() {
   }
 }
 
+//function to check if balls overlap
 function ballOverlap(x1, y1, r1, x2, y2, r2) {
   let squareDistance = (x1 - x2) ** 2 + (y1 - y2) ** 2;
   return squareDistance <= (r1 + r2) ** 2;
@@ -131,13 +147,14 @@ function ballOverlap(x1, y1, r1, x2, y2, r2) {
 
 ballGenerator();
 
+//function to animate the balls
 function update() {
+  ballCollisions();
   balls.forEach((ball) => {
     ball.move();
-    ballCollisions();
   });
+
   requestAnimationFrame(update);
 }
 
-// setInterval(update, 1000 / 10);
 update();
