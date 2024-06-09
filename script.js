@@ -1,27 +1,24 @@
-//getting the div element with the id rectangle
-const rect = document.getElementById("rectangle");
+//getting the canvas and context API
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
 
-console.log("canvas");
-
-//setting the width and height of the rectangle
+//setting the width and height of the canvas
 const width = 1000;
 const height = 800;
 
+canvas.width = width;
+canvas.height = height;
+canvas.style.border = "4px solid black";
+
 //settings for the ball animation
-const numOfBalls = 1000;
-const minRadius = 5;
-const maxRadius = 10;
+const numOfBalls = 40;
+const minRadius = 10;
+const maxRadius = 50;
 const minSpeed = 1;
-const maxSpeed = 5;
+const maxSpeed = 3;
 
 //array to store the balls
 const balls = [];
-
-//styling the rectangle
-rect.style.width = `${width}px`;
-rect.style.height = `${height}px`;
-rect.style.border = "4px solid black";
-rect.style.position = "relative";
 
 //class for the ball
 class Ball {
@@ -33,30 +30,24 @@ class Ball {
     this.radius = radius;
     this.color = color;
     this.mass = radius * 0.3;
-    this.ball = document.createElement("div");
-    this.ball.style.width = `${radius * 2}px`;
-    this.ball.style.height = `${radius * 2}px`;
-    this.ball.style.borderRadius = "50%";
-    this.ball.style.backgroundColor = `${this.color}`;
-    this.ball.style.position = "absolute";
-    this.ball.style.top = `${this.y}px`;
-    this.ball.style.left = `${this.x}px`;
+  }
 
-    rect.appendChild(this.ball);
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    ctx.fillStyle = this.color;
+    ctx.fill();
   }
   move() {
-    if (this.y + this.radius * 2 > height || this.y < 0) {
+    if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
       this.dy = -this.dy;
     }
-    if (this.x + this.radius * 2 > width || this.x < 0) {
+    if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
       this.dx = -this.dx;
     }
 
     this.y = this.y + this.dy;
     this.x = this.x + this.dx;
-    // this.ball.style.transform = `translate(${this.x}px, ${this.y}px)`;
-    this.ball.style.top = `${this.y}px`;
-    this.ball.style.left = `${this.x}px`;
   }
 }
 
@@ -150,9 +141,11 @@ ballGenerator();
 
 //function to animate the balls
 function update() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   ballCollisions();
   balls.forEach((ball) => {
     ball.move();
+    ball.draw();
   });
 
   requestAnimationFrame(update);
