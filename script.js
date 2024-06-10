@@ -11,11 +11,11 @@ canvas.height = height;
 canvas.style.border = "4px solid black";
 
 //settings for the ball animation
-const numOfBalls = 40;
+const numOfBalls = 60;
 const minRadius = 10;
 const maxRadius = 50;
 const minSpeed = 1;
-const maxSpeed = 3;
+const maxSpeed = 2;
 
 //array to store the balls
 const balls = [];
