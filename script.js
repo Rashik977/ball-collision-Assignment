@@ -6,11 +6,11 @@ const width = 1000;
 const height = 800;
 
 //settings for the ball animation
-const numOfBalls = 1000;
+const numOfBalls = 500;
 const minRadius = 5;
 const maxRadius = 10;
 const minSpeed = 1;
-const maxSpeed = 5;
+const maxSpeed = 4;
 
 //array to store the balls
 const balls = [];
