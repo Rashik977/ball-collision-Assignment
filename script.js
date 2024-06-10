@@ -11,9 +11,9 @@ canvas.height = height;
 canvas.style.border = "4px solid black";
 
 //settings for the ball animation
-const numOfBalls = 60;
+const numOfBalls = 40;
 const minRadius = 10;
-const maxRadius = 50;
+const maxRadius = 60;
 const minSpeed = 1;
 const maxSpeed = 2;
 
