@@ -2,7 +2,7 @@
 const rect = document.getElementById("rectangle");
 
 //setting the width and height of the rectangle
-const width = 1000;
+const width = 1400;
 const height = 800;
 
 //settings for the ball animation
@@ -10,7 +10,7 @@ const numOfBalls = 500;
 const minRadius = 5;
 const maxRadius = 10;
 const minSpeed = 1;
-const maxSpeed = 4;
+const maxSpeed = 3;
 
 //array to store the balls
 const balls = [];
